@@ -1007,8 +1007,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "First_Name",
-											"type": "String",
+											"name": "First_Name ",
 											"physicalType": "varchar"
 										}
 									},
@@ -1019,8 +1018,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Last_Name",
-											"type": "String",
+											"name": "Last_Name ",
 											"physicalType": "varchar"
 										}
 									},
@@ -2674,7 +2672,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "redbus.txt",
+						"fileName": "redbus.csv",
 						"container": "project-container"
 					},
 					"columnDelimiter": ",",
@@ -2682,7 +2680,48 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": []
+				"schema": [
+					{
+						"name": "First_Name ",
+						"type": "String"
+					},
+					{
+						"name": "Last_Name ",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "City_From",
+						"type": "String"
+					},
+					{
+						"name": "City To",
+						"type": "String"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "String"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "String"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "String"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]"
