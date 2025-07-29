@@ -1,0 +1,103 @@
+{
+	"name": "AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "action_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "sequence_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "instance_id",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "action_type",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "action_type_name",
+				"type": "varchar"
+			},
+			{
+				"name": "dac_object_type",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "dac_object_type_name",
+				"type": "varchar"
+			},
+			{
+				"name": "action_status",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "action_status_name",
+				"type": "varchar"
+			},
+			{
+				"name": "required",
+				"type": "bit"
+			},
+			{
+				"name": "dac_object_name_pretran",
+				"type": "nvarchar"
+			},
+			{
+				"name": "dac_object_name_posttran",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sqlscript",
+				"type": "nvarchar"
+			},
+			{
+				"name": "payload",
+				"type": "varbinary"
+			},
+			{
+				"name": "comments",
+				"type": "varchar"
+			},
+			{
+				"name": "error_string",
+				"type": "nvarchar"
+			},
+			{
+				"name": "created_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "date_created",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "date_modified",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "SalesLT",
+			"table": "SalesOrderHeader"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

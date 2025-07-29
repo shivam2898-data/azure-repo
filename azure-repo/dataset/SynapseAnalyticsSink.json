@@ -1,0 +1,38 @@
+{
+	"name": "SynapseAnalyticsSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "New_AzureSynapseAnalytics",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "SalesOrderID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RevisionNumber",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesOrderDetailID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OrderQty",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "sql_db"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

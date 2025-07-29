@@ -1,0 +1,9 @@
+{
+	"name": "RegexADF",
+	"location": "northeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "76a6532b-4989-4b37-9557-5ba5cc45e772",
+		"tenantId": "2b9f5d72-35eb-4054-bddd-4268792810b1"
+	}
+}

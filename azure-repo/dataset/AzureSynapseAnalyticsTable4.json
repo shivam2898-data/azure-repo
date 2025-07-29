@@ -1,0 +1,38 @@
+{
+	"name": "AzureSynapseAnalyticsTable4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "synpaseworkspace01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "userid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "movieid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "rating",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "timestamp",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "rating_chain"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
