@@ -751,6 +751,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "redbus.txt",
 						"container": "project-container"
 					},
 					"columnDelimiter": ",",
