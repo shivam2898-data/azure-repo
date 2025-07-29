@@ -34,6 +34,116 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "First_Name ",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "first_name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Last_Name ",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "last_name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Age",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "age",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "City_From",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "city_from",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "City To",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "city_to",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Bus_Type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "bus_type",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Seat_Type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "seat_type",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Payment_Method",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "payment_method",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Ticket_Fare",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ticket_fare",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
