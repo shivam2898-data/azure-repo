@@ -42,8 +42,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "First_Name",
-									"type": "String",
+									"name": "First_Name ",
 									"physicalType": "varchar"
 								}
 							},
@@ -54,8 +53,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Last_Name",
-									"type": "String",
+									"name": "Last_Name ",
 									"physicalType": "varchar"
 								}
 							},
