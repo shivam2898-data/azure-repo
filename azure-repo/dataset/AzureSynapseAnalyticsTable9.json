@@ -9,40 +9,40 @@
 		"type": "AzureSqlDWTable",
 		"schema": [
 			{
-				"name": "first_name",
+				"name": "First_Name",
 				"type": "varchar"
 			},
 			{
-				"name": "last_name",
+				"name": "Last_Name",
 				"type": "varchar"
 			},
 			{
-				"name": "age",
+				"name": "Age",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "city_from",
+				"name": "City_From",
 				"type": "varchar"
 			},
 			{
-				"name": "city_to",
+				"name": "City_To",
 				"type": "varchar"
 			},
 			{
-				"name": "bus_type",
+				"name": "Bus_Type",
 				"type": "varchar"
 			},
 			{
-				"name": "seat_type",
+				"name": "Seat_Type",
 				"type": "varchar"
 			},
 			{
-				"name": "payment_method",
+				"name": "Payment_Method",
 				"type": "varchar"
 			},
 			{
-				"name": "ticket_fare",
+				"name": "Ticket_Fare",
 				"type": "int",
 				"precision": 10
 			}
