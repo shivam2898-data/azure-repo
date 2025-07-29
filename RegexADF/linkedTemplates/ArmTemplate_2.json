@@ -344,7 +344,10 @@
 							},
 							"sink": {
 								"type": "SqlDWSink",
-								"writeBehavior": "Insert"
+								"writeBehavior": "Insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
