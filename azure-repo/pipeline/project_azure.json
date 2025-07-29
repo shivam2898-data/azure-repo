@@ -42,7 +42,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "first_name",
+									"name": "First_Name",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -54,8 +54,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "last_name",
-									"type": "String",
+									"name": "Last_Name ",
 									"physicalType": "varchar"
 								}
 							},
@@ -66,7 +65,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "age",
+									"name": "Age",
 									"type": "Int32",
 									"physicalType": "int"
 								}
@@ -78,7 +77,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "city_from",
+									"name": "City_From",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -90,7 +89,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "city_to",
+									"name": "City_To",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -102,7 +101,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "bus_type",
+									"name": "Bus_Type",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -114,7 +113,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "seat_type",
+									"name": "Seat_Type",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -126,7 +125,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "payment_method",
+									"name": "Payment_Method",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -138,7 +137,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ticket_fare",
+									"name": "Ticket_Fare",
 									"type": "Int32",
 									"physicalType": "int"
 								}
