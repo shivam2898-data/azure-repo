@@ -2684,11 +2684,11 @@
 				},
 				"schema": [
 					{
-						"name": "First_Name ",
+						"name": "First_Name",
 						"type": "String"
 					},
 					{
-						"name": "Last_Name ",
+						"name": "Last_Name",
 						"type": "String"
 					},
 					{
