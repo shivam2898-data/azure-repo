@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "RegexADF"
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase2_password": {
+			"value": ""
+		},
+		"AzureSynapseAnalytics1_password": {
+			"value": ""
+		},
+		"New_AzureSqlDatabase_connectionString": {
+			"value": ""
+		},
+		"New_AzureSynapseAnalytics_connectionString": {
+			"value": ""
+		},
+		"projectBlobStorage_connectionString": {
+			"value": ""
+		},
+		"storageADF_accountKey": {
+			"value": ""
+		},
+		"synpaseworkspace01_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "synpaseworkspace01.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "master"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "synpaseworkspace01"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_server": {
+			"value": "sql-server-regex.database.windows.net"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_database": {
+			"value": "SqlDatabase"
+		},
+		"AzureSqlDatabase2_properties_typeProperties_userName": {
+			"value": "synpaseworkspace01"
+		},
+		"AzureSynapseAnalytics1_properties_typeProperties_server": {
+			"value": "synpaseworkspace01.sql.azuresynapse.net"
+		},
+		"AzureSynapseAnalytics1_properties_typeProperties_database": {
+			"value": "regexpooldedicated"
+		},
+		"AzureSynapseAnalytics1_properties_typeProperties_userName": {
+			"value": "synpaseworkspace01"
+		},
+		"storageADF_properties_typeProperties_url": {
+			"value": "https://resource02.dfs.core.windows.net/"
+		},
+		"synpaseworkspace01_properties_typeProperties_server": {
+			"value": "synpaseworkspace01.sql.azuresynapse.net"
+		},
+		"synpaseworkspace01_properties_typeProperties_database": {
+			"value": "regexpooldedicated"
+		},
+		"synpaseworkspace01_properties_typeProperties_userName": {
+			"value": "synpaseworkspace01"
+		}
+	}
+}
