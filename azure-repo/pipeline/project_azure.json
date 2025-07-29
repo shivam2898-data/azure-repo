@@ -31,7 +31,6 @@
 						"type": "SqlDWSink",
 						"writeBehavior": "Insert",
 						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
@@ -70,8 +69,8 @@
 								},
 								"sink": {
 									"name": "Age",
-									"type": "Int32",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -142,8 +141,8 @@
 								},
 								"sink": {
 									"name": "Ticket_Fare",
-									"type": "Int32",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
