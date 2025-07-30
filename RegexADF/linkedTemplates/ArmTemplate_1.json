@@ -458,6 +458,173 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ProjectADFSynapse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "New_AzureSynapseAnalytics",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "RouteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "City_From",
+						"type": "varchar"
+					},
+					{
+						"name": "City_To",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimPassenger"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RedBus')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "projectBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "redbus.csv",
+						"container": "project-container"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "First_Name",
+						"type": "String"
+					},
+					{
+						"name": "Last_Name",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "City_From",
+						"type": "String"
+					},
+					{
+						"name": "City To",
+						"type": "String"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "String"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "String"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "String"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RedBusTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "projectBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "redbus.csv",
+						"container": "project-container"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "First_Name",
+						"type": "String"
+					},
+					{
+						"name": "Last_Name",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "City_From",
+						"type": "String"
+					},
+					{
+						"name": "City To",
+						"type": "String"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "String"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "String"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "String"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDataset_31n')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -845,337 +1012,6 @@
 				]
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/csv_toParquet')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "01_storage_csv_parquet",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFileName": "*.csv",
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
-									"copyBehavior": "PreserveHierarchy"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "storage_CSv_parquet",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "01stoageCsvParquet",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-07-23T05:10:13Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/storage_CSv_parquet')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/csv_toSynapse')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_31n",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "resource-container//"
-							},
-							{
-								"name": "Destination",
-								"value": "dbo.rating_ADF"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFileName": "*",
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings",
-									"skipLineCount": 0
-								}
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"writeBehavior": "Insert"
-							},
-							"enableStaging": false,
-							"validateDataConsistency": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "userId",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "userid",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "movieId",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "movieid",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "rating",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "rating",
-											"type": "Double",
-											"physicalType": "float"
-										}
-									},
-									{
-										"source": {
-											"name": "timestamp",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "timestamp",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SourceDataset_31n",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DestinationDataset_31n",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-07-23T04:57:34Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceDataset_31n')]",
-				"[concat(variables('factoryId'), '/datasets/DestinationDataset_31n')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/parquetToSynapseTable')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "parquetData",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ParquetSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "ParquetReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"writeBehavior": "Insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "userId",
-											"type": "String",
-											"physicalType": "UTF8"
-										},
-										"sink": {
-											"name": "userid",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "movieId",
-											"type": "String",
-											"physicalType": "UTF8"
-										},
-										"sink": {
-											"name": "movieid",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "rating",
-											"type": "String",
-											"physicalType": "UTF8"
-										},
-										"sink": {
-											"name": "rating",
-											"type": "Double",
-											"physicalType": "float"
-										}
-									},
-									{
-										"source": {
-											"name": "timestamp",
-											"type": "String",
-											"physicalType": "UTF8"
-										},
-										"sink": {
-											"name": "timestamp",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Parquet3",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzureSynapseAnalyticsTable2",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-07-23T09:15:18Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parquet3')]"
-			]
 		}
 	]
 }
