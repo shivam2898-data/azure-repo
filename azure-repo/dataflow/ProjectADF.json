@@ -86,6 +86,21 @@
 				},
 				{
 					"name": "Booking"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "filter3"
+				},
+				{
+					"name": "filter4"
+				},
+				{
+					"name": "filter5"
 				}
 			],
 			"scriptLines": [
@@ -157,7 +172,14 @@
 				"FactBooking keyGenerate(output(BookingID as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> Booking",
-				"Route sink(allowSchemaDrift: true,",
+				"Payment filter(!isNull(Payment_Method) && !isNull(Ticket_Fare) && !isNull(PaymentID)",
+				") ~> filter1",
+				"Passenger filter(!isNull(First_Name) && !isNull(Last_Name) && !isNull(Age)&& !isNull(PassengerID)) ~> filter2",
+				"Bus filter(!isNull(Bus_Type) && !isNull(Seat_Type) && !isNull(BusID)) ~> filter3",
+				"Booking filter(!isNull(RouteID) && !isNull(PaymentID) && !isNull(BusID)&& !isNull(PassengerID)&&!isNull(BookingID)) ~> filter4",
+				"Route filter(!isNull(City_From) && !isNull(Ticket_Fare) && !isNull(RouteID)",
+				") ~> filter5",
+				"filter5 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          RouteID as integer,",
@@ -174,7 +196,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"Payment sink(allowSchemaDrift: true,",
+				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          RouteID as integer,",
@@ -191,7 +213,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink2",
-				"Bus sink(allowSchemaDrift: true,",
+				"filter3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          RouteID as integer,",
@@ -208,7 +230,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink3",
-				"Passenger sink(allowSchemaDrift: true,",
+				"filter2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          RouteID as integer,",
@@ -225,7 +247,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink4",
-				"Booking sink(allowSchemaDrift: true,",
+				"filter4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          RouteID as integer,",
