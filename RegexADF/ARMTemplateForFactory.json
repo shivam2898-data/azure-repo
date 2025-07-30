@@ -2402,7 +2402,7 @@
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "DimPassenger"
+					"table": "FactBooking"
 				}
 			},
 			"dependsOn": [
@@ -3291,6 +3291,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink4"
+						},
+						{
+							"dataset": {
+								"referenceName": "ProjectADFSynapse",
+								"type": "DatasetReference"
+							},
+							"name": "sink5"
 						}
 					],
 					"transformations": [
@@ -3323,6 +3330,9 @@
 						},
 						{
 							"name": "FactBooking"
+						},
+						{
+							"name": "Booking"
 						}
 					],
 					"scriptLines": [
@@ -3391,6 +3401,9 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> FactBooking",
+						"FactBooking keyGenerate(output(BookingID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> Booking",
 						"Route sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
@@ -3458,7 +3471,24 @@
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink4"
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink4",
+						"Booking sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          RouteID as integer,",
+						"          City_From as string,",
+						"          City_To as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink5"
 					]
 				}
 			},

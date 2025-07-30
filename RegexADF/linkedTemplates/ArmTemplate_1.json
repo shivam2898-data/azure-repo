@@ -485,7 +485,7 @@
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "DimPassenger"
+					"table": "FactBooking"
 				}
 			},
 			"dependsOn": []
