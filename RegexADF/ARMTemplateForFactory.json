@@ -3354,7 +3354,11 @@
 								"referenceName": "ProjectADFSynapse",
 								"type": "DatasetReference"
 							},
-							"name": "sink5"
+							"name": "sink5",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						}
 					],
 					"transformations": [
@@ -3551,7 +3555,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/RedBus')]",
-				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]"
+				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]",
+				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]"
 			]
 		},
 		{

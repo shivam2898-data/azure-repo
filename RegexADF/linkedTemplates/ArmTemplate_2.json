@@ -985,7 +985,11 @@
 								"referenceName": "ProjectADFSynapse",
 								"type": "DatasetReference"
 							},
-							"name": "sink5"
+							"name": "sink5",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						}
 					],
 					"transformations": [
