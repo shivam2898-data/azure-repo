@@ -4022,7 +4022,11 @@
 								"referenceName": "redbussynapsetable3",
 								"type": "DatasetReference"
 							},
-							"name": "sinkRoute"
+							"name": "sinkRoute",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						},
 						{
 							"dataset": {
@@ -4036,7 +4040,11 @@
 								"referenceName": "redbussynapsetable",
 								"type": "DatasetReference"
 							},
-							"name": "sinkPayment"
+							"name": "sinkPayment",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						}
 					],
 					"transformations": [
@@ -4288,6 +4296,7 @@
 				"[concat(variables('factoryId'), '/datasets/ProjectRedBus')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable4')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable3')]",
+				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable2')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable')]"
 			]
