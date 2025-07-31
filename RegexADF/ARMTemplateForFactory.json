@@ -1214,6 +1214,45 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "RedBusDataFlow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "ProjectADFRedBus",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"RedBus": {},
+									"sinkPassenger": {},
+									"sinkRoute": {},
+									"sinkBus": {},
+									"sinkPayment": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "projectBlobStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "project-container"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -1223,7 +1262,9 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/redbuscsv')]",
-				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]"
+				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]",
+				"[concat(variables('factoryId'), '/dataflows/ProjectADFRedBus')]",
+				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]"
 			]
 		},
 		{
