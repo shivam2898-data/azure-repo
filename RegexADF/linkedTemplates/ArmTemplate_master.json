@@ -19,9 +19,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSynapseAnalytics1'"
 		},
-		"AzureSynapseAnalyticsRedBus_password": {
+		"AzureSynapseAnalyticsRedBus_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AzureSynapseAnalyticsRedBus'"
+			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalyticsRedBus'"
 		},
 		"New_AzureSqlDatabase_connectionString": {
 			"type": "secureString",
@@ -79,18 +79,6 @@
 			"type": "string",
 			"defaultValue": "synpaseworkspace01"
 		},
-		"AzureSynapseAnalyticsRedBus_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "synpaseworkspace01.sql.azuresynapse.net"
-		},
-		"AzureSynapseAnalyticsRedBus_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "regexpooldedicated"
-		},
-		"AzureSynapseAnalyticsRedBus_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "synpaseworkspace01"
-		},
 		"storageADF_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://resource02.dfs.core.windows.net/"
@@ -143,8 +131,8 @@
 					"AzureSynapseAnalytics1_password": {
 						"value": "[parameters('AzureSynapseAnalytics1_password')]"
 					},
-					"AzureSynapseAnalyticsRedBus_password": {
-						"value": "[parameters('AzureSynapseAnalyticsRedBus_password')]"
+					"AzureSynapseAnalyticsRedBus_connectionString": {
+						"value": "[parameters('AzureSynapseAnalyticsRedBus_connectionString')]"
 					},
 					"New_AzureSqlDatabase_connectionString": {
 						"value": "[parameters('New_AzureSqlDatabase_connectionString')]"
@@ -187,15 +175,6 @@
 					},
 					"AzureSynapseAnalytics1_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSynapseAnalytics1_properties_typeProperties_userName')]"
-					},
-					"AzureSynapseAnalyticsRedBus_properties_typeProperties_server": {
-						"value": "[parameters('AzureSynapseAnalyticsRedBus_properties_typeProperties_server')]"
-					},
-					"AzureSynapseAnalyticsRedBus_properties_typeProperties_database": {
-						"value": "[parameters('AzureSynapseAnalyticsRedBus_properties_typeProperties_database')]"
-					},
-					"AzureSynapseAnalyticsRedBus_properties_typeProperties_userName": {
-						"value": "[parameters('AzureSynapseAnalyticsRedBus_properties_typeProperties_userName')]"
 					},
 					"storageADF_properties_typeProperties_url": {
 						"value": "[parameters('storageADF_properties_typeProperties_url')]"
