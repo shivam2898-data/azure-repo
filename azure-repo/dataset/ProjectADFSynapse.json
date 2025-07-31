@@ -24,7 +24,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "FactBooking"
+			"table": "red_bus"
 		}
 	}
 }
