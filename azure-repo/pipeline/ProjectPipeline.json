@@ -15,10 +15,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "ProjectADF",
-						"type": "DataFlowReference"
-					},
 					"staging": {
 						"linkedService": {
 							"referenceName": "projectBlobStorage",
