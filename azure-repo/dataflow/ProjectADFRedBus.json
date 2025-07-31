@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "RedBus"
+				},
+				{
+					"dataset": {
+						"referenceName": "RedBusFactTable",
+						"type": "DatasetReference"
+					},
+					"name": "RedBusFact"
 				}
 			],
 			"sinks": [
@@ -102,6 +109,12 @@
 				},
 				{
 					"name": "selectPayment"
+				},
+				{
+					"name": "lookupDimPayment"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -120,6 +133,21 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> RedBus",
+				"source(output(",
+				"          First_Name as string,",
+				"          Last_Name as string,",
+				"          Age as string,",
+				"          City_From as string,",
+				"          City_To as string,",
+				"          Bus_Type as string,",
+				"          Seat_Type as string,",
+				"          Booking_Type as string,",
+				"          Payment_Method as string,",
+				"          Ticket_Fare as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> RedBusFact",
 				"RedBus select(mapColumn(",
 				"          First_Name,",
 				"          Last_Name,",
@@ -208,6 +236,13 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectPayment",
+				"RedBusFact, selectPayment lookup(RedBusFact@Booking_Type == selectPayment@Booking_Type",
+				"     && RedBusFact@Payment_Method == selectPayment@Payment_Method",
+				"     && RedBusFact@Ticket_Fare == selectPayment@Ticket_Fare,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookupDimPayment",
+				"lookupDimPayment derive(PaymentID = abs(PaymentID)) ~> derivedColumn1",
 				"selectPassenger sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
