@@ -222,7 +222,11 @@
 								"referenceName": "redbussynapsetable4",
 								"type": "DatasetReference"
 							},
-							"name": "sinkPassenger"
+							"name": "sinkPassenger",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						},
 						{
 							"dataset": {
@@ -240,7 +244,11 @@
 								"referenceName": "redbussynapsetable2",
 								"type": "DatasetReference"
 							},
-							"name": "sinkBus"
+							"name": "sinkBus",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						},
 						{
 							"dataset": {

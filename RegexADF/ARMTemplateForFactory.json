@@ -4015,7 +4015,11 @@
 								"referenceName": "redbussynapsetable4",
 								"type": "DatasetReference"
 							},
-							"name": "sinkPassenger"
+							"name": "sinkPassenger",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						},
 						{
 							"dataset": {
@@ -4033,7 +4037,11 @@
 								"referenceName": "redbussynapsetable2",
 								"type": "DatasetReference"
 							},
-							"name": "sinkBus"
+							"name": "sinkBus",
+							"rejectedDataLinkedService": {
+								"referenceName": "projectBlobStorage",
+								"type": "LinkedServiceReference"
+							}
 						},
 						{
 							"dataset": {
@@ -4295,8 +4303,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ProjectRedBus')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable4')]",
-				"[concat(variables('factoryId'), '/datasets/redbussynapsetable3')]",
 				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]",
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetable3')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable2')]",
 				"[concat(variables('factoryId'), '/datasets/redbussynapsetable')]"
 			]
