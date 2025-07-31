@@ -25,7 +25,11 @@
 						"referenceName": "redbussynapsetable3",
 						"type": "DatasetReference"
 					},
-					"name": "sinkRoute"
+					"name": "sinkRoute",
+					"rejectedDataLinkedService": {
+						"referenceName": "projectBlobStorage",
+						"type": "LinkedServiceReference"
+					}
 				},
 				{
 					"dataset": {
@@ -39,7 +43,11 @@
 						"referenceName": "redbussynapsetable",
 						"type": "DatasetReference"
 					},
-					"name": "sinkPayment"
+					"name": "sinkPayment",
+					"rejectedDataLinkedService": {
+						"referenceName": "projectBlobStorage",
+						"type": "LinkedServiceReference"
+					}
 				}
 			],
 			"transformations": [
