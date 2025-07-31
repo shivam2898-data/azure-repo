@@ -3453,6 +3453,177 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/redbussynapsetable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsRedBus",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BusID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Bus_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimBus"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalyticsRedBus')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/redbussynapsetable3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsRedBus",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "RouteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "City_From",
+						"type": "varchar"
+					},
+					{
+						"name": "City_To",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimRoute"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalyticsRedBus')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/redbussynapsetable4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsRedBus",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "PassengerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "First_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Last_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Age",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimPassenger"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalyticsRedBus')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/redbussynapsetablecopy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsRedBus",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "First_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Last_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Age",
+						"type": "varchar"
+					},
+					{
+						"name": "City_From",
+						"type": "varchar"
+					},
+					{
+						"name": "City_To",
+						"type": "varchar"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "varchar"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "red_bus"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSynapseAnalyticsRedBus')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/storage_CSv_parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3843,21 +4014,21 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "ProjectADFSynapse",
+								"referenceName": "redbussynapsetable4",
 								"type": "DatasetReference"
 							},
 							"name": "sinkPassenger"
 						},
 						{
 							"dataset": {
-								"referenceName": "ProjectADFSynapse",
+								"referenceName": "redbussynapsetable3",
 								"type": "DatasetReference"
 							},
 							"name": "sinkRoute"
 						},
 						{
 							"dataset": {
-								"referenceName": "redbussynapsetable",
+								"referenceName": "redbussynapsetable2",
 								"type": "DatasetReference"
 							},
 							"name": "sinkBus"
@@ -3871,7 +4042,7 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "redbussynapsetable",
+								"referenceName": "redbussynapsetablecopy",
 								"type": "DatasetReference"
 							},
 							"name": "sinkredbustable"
@@ -4061,9 +4232,10 @@
 						"selectPassenger sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          RouteID as integer,",
-						"          City_From as string,",
-						"          City_To as string",
+						"          PassengerID as integer,",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -4095,16 +4267,9 @@
 						"selectBus sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          First_Name as string,",
-						"          Last_Name as string,",
-						"          Age as string,",
-						"          City_From as string,",
-						"          City_To as string,",
+						"          BusID as integer,",
 						"          Bus_Type as string,",
-						"          Seat_Type as string,",
-						"          Booking_Type as string,",
-						"          Payment_Method as string,",
-						"          Ticket_Fare as string",
+						"          Seat_Type as string",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -4170,8 +4335,11 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ProjectRedBus')]",
 				"[concat(variables('factoryId'), '/datasets/CSVRedBus')]",
-				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]",
-				"[concat(variables('factoryId'), '/datasets/redbussynapsetable')]"
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetable4')]",
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetable3')]",
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetable2')]",
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetable')]",
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetablecopy')]"
 			]
 		},
 		{
