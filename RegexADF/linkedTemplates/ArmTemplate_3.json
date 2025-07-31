@@ -13,6 +13,480 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/redBusLoadData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowCopyCommand": true,
+								"copyCommandSettings": {}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "csvformat",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "dataLoadSynapseRedBus",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Newdataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SqlTableOrderDetail",
+								"type": "DatasetReference"
+							},
+							"name": "sourceOrderDetail"
+						},
+						{
+							"dataset": {
+								"referenceName": "SqlTableOrderHeader",
+								"type": "DatasetReference"
+							},
+							"name": "sourceOrderHeader"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SynapseAnalyticsSink",
+								"type": "DatasetReference"
+							},
+							"name": "sinkDestination"
+						}
+					],
+					"transformations": [
+						{
+							"name": "joinOrderDetailHeader"
+						},
+						{
+							"name": "selectColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SalesOrderID as integer,",
+						"          SalesOrderDetailID as integer,",
+						"          OrderQty as integer,",
+						"          ProductID as integer,",
+						"          UnitPrice as decimal(19,4),",
+						"          UnitPriceDiscount as decimal(19,4),",
+						"          LineTotal as decimal(38,6),",
+						"          rowguid as string,",
+						"          ModifiedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> sourceOrderDetail",
+						"source(output(",
+						"          SalesOrderID as integer,",
+						"          RevisionNumber as integer,",
+						"          OrderDate as timestamp,",
+						"          DueDate as timestamp,",
+						"          ShipDate as timestamp,",
+						"          Status as integer,",
+						"          OnlineOrderFlag as boolean,",
+						"          SalesOrderNumber as string,",
+						"          PurchaseOrderNumber as string,",
+						"          AccountNumber as string,",
+						"          CustomerID as integer,",
+						"          ShipToAddressID as integer,",
+						"          BillToAddressID as integer,",
+						"          ShipMethod as string,",
+						"          CreditCardApprovalCode as string,",
+						"          SubTotal as decimal(19,4),",
+						"          TaxAmt as decimal(19,4),",
+						"          Freight as decimal(19,4),",
+						"          TotalDue as decimal(19,4),",
+						"          Comment as string,",
+						"          rowguid as string,",
+						"          ModifiedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> sourceOrderHeader",
+						"sourceOrderDetail, sourceOrderHeader join(sourceOrderDetail@SalesOrderID == sourceOrderHeader@SalesOrderID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> joinOrderDetailHeader",
+						"joinOrderDetailHeader select(mapColumn(",
+						"          SalesOrderID = sourceOrderDetail@SalesOrderID,",
+						"          SalesOrderDetailID,",
+						"          OrderQty,",
+						"          RevisionNumber",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectColumns",
+						"selectColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          SalesOrderID as integer,",
+						"          RevisionNumber as integer,",
+						"          SalesOrderDetailID as integer,",
+						"          OrderQty as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkDestination"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ProjectADFRedBus')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ProjectRedBus",
+								"type": "DatasetReference"
+							},
+							"name": "RedBus"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "redbussynapsetable4",
+								"type": "DatasetReference"
+							},
+							"name": "sinkPassenger"
+						},
+						{
+							"dataset": {
+								"referenceName": "redbussynapsetable3",
+								"type": "DatasetReference"
+							},
+							"name": "sinkRoute"
+						},
+						{
+							"dataset": {
+								"referenceName": "redbussynapsetable2",
+								"type": "DatasetReference"
+							},
+							"name": "sinkBus"
+						},
+						{
+							"dataset": {
+								"referenceName": "redbussynapsetable",
+								"type": "DatasetReference"
+							},
+							"name": "sinkPayment"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DimPassenger"
+						},
+						{
+							"name": "aggregatePassenger"
+						},
+						{
+							"name": "filterPassenger"
+						},
+						{
+							"name": "surrogateKeyPassenger"
+						},
+						{
+							"name": "selectPassenger"
+						},
+						{
+							"name": "DimRoute"
+						},
+						{
+							"name": "filterRoute"
+						},
+						{
+							"name": "aggregateRoute"
+						},
+						{
+							"name": "surrogateKeyRoute"
+						},
+						{
+							"name": "selectRoute"
+						},
+						{
+							"name": "DimBus"
+						},
+						{
+							"name": "filterBus"
+						},
+						{
+							"name": "aggregateBus"
+						},
+						{
+							"name": "surrogateKeyBus"
+						},
+						{
+							"name": "selectBus"
+						},
+						{
+							"name": "DimPayment"
+						},
+						{
+							"name": "filterPayment"
+						},
+						{
+							"name": "aggregatePayment"
+						},
+						{
+							"name": "surrogateKeyPayment"
+						},
+						{
+							"name": "selectPayment"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
+						"          City_From as string,",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> RedBus",
+						"RedBus select(mapColumn(",
+						"          First_Name,",
+						"          Last_Name,",
+						"          Age",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DimPassenger",
+						"filterPassenger aggregate(groupBy(First_Name,",
+						"          Last_Name,",
+						"          Age),",
+						"     First_Name_C = count(First_Name)) ~> aggregatePassenger",
+						"DimPassenger filter(!isNull(First_Name) &&",
+						"!isNull(Last_Name) &&",
+						"!isNull(Age)) ~> filterPassenger",
+						"aggregatePassenger keyGenerate(output(PassengerID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKeyPassenger",
+						"surrogateKeyPassenger select(mapColumn(",
+						"          First_Name,",
+						"          Last_Name,",
+						"          Age,",
+						"          PassengerID",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectPassenger",
+						"RedBus select(mapColumn(",
+						"          City_From,",
+						"          City_To",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DimRoute",
+						"DimRoute filter(!isNull(City_From) && !isNull(City_To)) ~> filterRoute",
+						"filterRoute aggregate(groupBy(City_From,",
+						"          City_To),",
+						"     City_From_C = count(City_From)) ~> aggregateRoute",
+						"aggregateRoute keyGenerate(output(RouteID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKeyRoute",
+						"surrogateKeyRoute select(mapColumn(",
+						"          City_From,",
+						"          City_To,",
+						"          RouteID",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectRoute",
+						"RedBus select(mapColumn(",
+						"          Bus_Type,",
+						"          Seat_Type",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DimBus",
+						"DimBus filter(!isNull(Bus_Type) && !isNull(Seat_Type)) ~> filterBus",
+						"filterBus aggregate(groupBy(Bus_Type,",
+						"          Seat_Type),",
+						"     Bus_Type_C = count(Bus_Type)) ~> aggregateBus",
+						"aggregateBus keyGenerate(output(BusID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKeyBus",
+						"surrogateKeyBus select(mapColumn(",
+						"          Bus_Type,",
+						"          Seat_Type,",
+						"          BusID",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectBus",
+						"RedBus select(mapColumn(",
+						"          Booking_Type,",
+						"          Payment_Method,",
+						"          Ticket_Fare",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DimPayment",
+						"DimPayment filter(!isNull(Booking_Type) && !isNull(Payment_Method)  && !isNull(Ticket_Fare)) ~> filterPayment",
+						"filterPayment aggregate(groupBy(Booking_Type,",
+						"          Payment_Method,",
+						"          Ticket_Fare),",
+						"     Booking_Type_C = count(Booking_Type)) ~> aggregatePayment",
+						"aggregatePayment keyGenerate(output(PaymentID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKeyPayment",
+						"surrogateKeyPayment select(mapColumn(",
+						"          Booking_Type,",
+						"          Payment_Method,",
+						"          Ticket_Fare,",
+						"          PaymentID",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectPayment",
+						"selectPassenger sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          PassengerID as integer,",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkPassenger",
+						"selectRoute sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          RouteID as integer,",
+						"          City_From as string,",
+						"          City_To as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkRoute",
+						"selectBus sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          BusID as integer,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkBus",
+						"selectPayment sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
+						"          City_From as string,",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -511,7 +985,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/ProjectADFRedBus')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/triggertumbling')]",
