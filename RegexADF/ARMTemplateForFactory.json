@@ -1025,7 +1025,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "redbus",
+						"name": "RedBus",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1042,7 +1042,6 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFileName": "*",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -1052,122 +1051,11 @@
 							"sink": {
 								"type": "SqlDWSink",
 								"writeBehavior": "Insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
+								"sqlWriterUseTableLock": false
 							},
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "First_Name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "First_Name",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Last_Name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Last_Name",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Age",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Age",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "City_From",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "City_From",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "City To",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "City To",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Bus_Type",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Bus_Type",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Seat_Type",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Seat_Type",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Payment_Method",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Payment_Method",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Ticket_Fare",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Ticket_Fare",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -1177,14 +1065,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "redbusfile",
+								"referenceName": "RedBusData",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "AzureSynapseAnalyticsTable9",
+								"referenceName": "ProjectADFSynapse",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1197,8 +1085,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/redbusfile')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsTable9')]"
+				"[concat(variables('factoryId'), '/datasets/RedBusData')]",
+				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]"
 			]
 		},
 		{
@@ -2459,7 +2347,7 @@
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "FactBooking"
+					"table": "red_bus"
 				}
 			},
 			"dependsOn": [
@@ -2507,6 +2395,75 @@
 					},
 					{
 						"name": "City To",
+						"type": "String"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "String"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "String"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "String"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RedBusData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "projectBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "redbus.csv",
+						"container": "project-container"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "First_Name",
+						"type": "String"
+					},
+					{
+						"name": "Last_Name",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "City_From",
+						"type": "String"
+					},
+					{
+						"name": "City_To",
 						"type": "String"
 					},
 					{
