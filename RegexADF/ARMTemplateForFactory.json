@@ -2505,6 +2505,75 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RedBusFactTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "projectBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "redbus.csv",
+						"container": "project-container"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "First_Name",
+						"type": "String"
+					},
+					{
+						"name": "Last_Name",
+						"type": "String"
+					},
+					{
+						"name": "Age",
+						"type": "String"
+					},
+					{
+						"name": "City_From",
+						"type": "String"
+					},
+					{
+						"name": "City_To",
+						"type": "String"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "String"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "String"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "String"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "String"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/projectBlobStorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RedBusTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3287,6 +3356,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "RedBus"
+						},
+						{
+							"dataset": {
+								"referenceName": "RedBusFactTable",
+								"type": "DatasetReference"
+							},
+							"name": "RedBusFact"
 						}
 					],
 					"sinks": [
@@ -3379,6 +3455,12 @@
 						},
 						{
 							"name": "selectPayment"
+						},
+						{
+							"name": "lookupDimPayment"
+						},
+						{
+							"name": "derivedColumn1"
 						}
 					],
 					"scriptLines": [
@@ -3397,6 +3479,21 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> RedBus",
+						"source(output(",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
+						"          City_From as string,",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> RedBusFact",
 						"RedBus select(mapColumn(",
 						"          First_Name,",
 						"          Last_Name,",
@@ -3485,6 +3582,13 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> selectPayment",
+						"RedBusFact, selectPayment lookup(RedBusFact@Booking_Type == selectPayment@Booking_Type",
+						"     && RedBusFact@Payment_Method == selectPayment@Payment_Method",
+						"     && RedBusFact@Ticket_Fare == selectPayment@Ticket_Fare,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookupDimPayment",
+						"lookupDimPayment derive(PaymentID = abs(PaymentID)) ~> derivedColumn1",
 						"selectPassenger sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
@@ -3558,6 +3662,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ProjectRedBus')]",
+				"[concat(variables('factoryId'), '/datasets/RedBusFactTable')]",
 				"[concat(variables('factoryId'), '/datasets/ProjectADFSynapse')]"
 			]
 		},
