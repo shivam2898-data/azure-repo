@@ -1,0 +1,30 @@
+{
+	"name": "redbussynapsetable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalyticsRedBus",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "BusID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Bus_Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Seat_Type",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimBus"
+		}
+	}
+}

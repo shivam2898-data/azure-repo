@@ -1,0 +1,30 @@
+{
+	"name": "redbussynapsetable3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalyticsRedBus",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "RouteID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "City_From",
+				"type": "varchar"
+			},
+			{
+				"name": "City_To",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimRoute"
+		}
+	}
+}
