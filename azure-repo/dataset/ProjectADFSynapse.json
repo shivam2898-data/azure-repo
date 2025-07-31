@@ -24,7 +24,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "red_bus"
+			"table": "DimBus"
 		}
 	}
 }
