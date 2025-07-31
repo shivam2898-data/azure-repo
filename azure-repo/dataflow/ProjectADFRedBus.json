@@ -10,13 +10,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "RedBus"
-				},
-				{
-					"dataset": {
-						"referenceName": "CSVRedBus",
-						"type": "DatasetReference"
-					},
-					"name": "table1"
 				}
 			],
 			"sinks": [
@@ -47,13 +40,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkPayment"
-				},
-				{
-					"dataset": {
-						"referenceName": "redbussynapsetablecopy",
-						"type": "DatasetReference"
-					},
-					"name": "sinkredbustable"
 				}
 			],
 			"transformations": [
@@ -134,21 +120,6 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> RedBus",
-				"source(output(",
-				"          First_Name as string,",
-				"          Last_Name as string,",
-				"          Age as string,",
-				"          City_From as string,",
-				"          City_To as string,",
-				"          Bus_Type as string,",
-				"          Seat_Type as string,",
-				"          Booking_Type as string,",
-				"          Payment_Method as string,",
-				"          Ticket_Fare as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> table1",
 				"RedBus select(mapColumn(",
 				"          First_Name,",
 				"          Last_Name,",
@@ -312,31 +283,7 @@
 				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment",
-				"table1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          First_Name as string,",
-				"          Last_Name as string,",
-				"          Age as string,",
-				"          City_From as string,",
-				"          City_To as string,",
-				"          Bus_Type as string,",
-				"          Seat_Type as string,",
-				"          Booking_Type as string,",
-				"          Payment_Method as string,",
-				"          Ticket_Fare as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     staged: true,",
-				"     allowCopyCommand: true,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkredbustable"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment"
 			]
 		}
 	}
