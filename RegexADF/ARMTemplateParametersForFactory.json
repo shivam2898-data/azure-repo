@@ -14,6 +14,9 @@
 		"AzureSynapseAnalytics1_password": {
 			"value": ""
 		},
+		"AzureSynapseAnalyticsRedBus_password": {
+			"value": ""
+		},
 		"New_AzureSqlDatabase_connectionString": {
 			"value": ""
 		},
@@ -54,6 +57,15 @@
 			"value": "regexpooldedicated"
 		},
 		"AzureSynapseAnalytics1_properties_typeProperties_userName": {
+			"value": "synpaseworkspace01"
+		},
+		"AzureSynapseAnalyticsRedBus_properties_typeProperties_server": {
+			"value": "synpaseworkspace01.sql.azuresynapse.net"
+		},
+		"AzureSynapseAnalyticsRedBus_properties_typeProperties_database": {
+			"value": "regexpooldedicated"
+		},
+		"AzureSynapseAnalyticsRedBus_properties_typeProperties_userName": {
 			"value": "synpaseworkspace01"
 		},
 		"storageADF_properties_typeProperties_url": {

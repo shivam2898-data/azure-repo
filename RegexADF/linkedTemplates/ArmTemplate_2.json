@@ -13,6 +13,204 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SqlTableOrderDetail')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "New_AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SalesOrderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SalesOrderDetailID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "OrderQty",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ProductID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "UnitPrice",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "UnitPriceDiscount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LineTotal",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 6
+					},
+					{
+						"name": "rowguid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "SalesLT",
+					"table": "SalesOrderDetail"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlTableOrderHeader')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "New_AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SalesOrderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "RevisionNumber",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "OrderDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "DueDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ShipDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Status",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "OnlineOrderFlag",
+						"type": "bit"
+					},
+					{
+						"name": "SalesOrderNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PurchaseOrderNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AccountNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ShipToAddressID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "BillToAddressID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ShipMethod",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreditCardApprovalCode",
+						"type": "varchar"
+					},
+					{
+						"name": "SubTotal",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TaxAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Freight",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TotalDue",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Comment",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rowguid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "SalesLT",
+					"table": "SalesOrderHeader"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SynapseAnalyticsSink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -183,6 +381,66 @@
 						"type": "String"
 					}
 				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/redbussynapsetable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalyticsRedBus",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "First_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Last_Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Age",
+						"type": "varchar"
+					},
+					{
+						"name": "City_From",
+						"type": "varchar"
+					},
+					{
+						"name": "City_To",
+						"type": "varchar"
+					},
+					{
+						"name": "Bus_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Seat_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Booking_Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Payment_Method",
+						"type": "varchar"
+					},
+					{
+						"name": "Ticket_Fare",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimPayment"
+				}
 			},
 			"dependsOn": []
 		},
@@ -1040,6 +1298,8 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlTableOrderDetail')]",
+				"[concat(variables('factoryId'), '/datasets/SqlTableOrderHeader')]",
 				"[concat(variables('factoryId'), '/datasets/SynapseAnalyticsSink')]"
 			]
 		},
@@ -1057,6 +1317,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "RedBus"
+						},
+						{
+							"dataset": {
+								"referenceName": "CSVRedBus",
+								"type": "DatasetReference"
+							},
+							"name": "table1"
 						}
 					],
 					"sinks": [
@@ -1076,17 +1343,24 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "ProjectADFSynapse",
+								"referenceName": "redbussynapsetable",
 								"type": "DatasetReference"
 							},
 							"name": "sinkBus"
 						},
 						{
 							"dataset": {
-								"referenceName": "ProjectADFSynapse",
+								"referenceName": "redbussynapsetable",
 								"type": "DatasetReference"
 							},
 							"name": "sinkPayment"
+						},
+						{
+							"dataset": {
+								"referenceName": "redbussynapsetable",
+								"type": "DatasetReference"
+							},
+							"name": "sinkredbustable"
 						}
 					],
 					"transformations": [
@@ -1167,6 +1441,21 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> RedBus",
+						"source(output(",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
+						"          City_From as string,",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> table1",
 						"RedBus select(mapColumn(",
 						"          First_Name,",
 						"          Last_Name,",
@@ -1292,9 +1581,16 @@
 						"selectBus sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          RouteID as integer,",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
 						"          City_From as string,",
-						"          City_To as string",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -1309,9 +1605,16 @@
 						"selectPayment sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          RouteID as integer,",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
 						"          City_From as string,",
-						"          City_To as string",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -1322,11 +1625,37 @@
 						"     allowCopyCommand: true,",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment"
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment",
+						"table1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          First_Name as string,",
+						"          Last_Name as string,",
+						"          Age as string,",
+						"          City_From as string,",
+						"          City_To as string,",
+						"          Bus_Type as string,",
+						"          Seat_Type as string,",
+						"          Booking_Type as string,",
+						"          Payment_Method as string,",
+						"          Ticket_Fare as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinkredbustable"
 					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/redbussynapsetable')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
@@ -1876,10 +2205,12 @@
 								"parameters": {},
 								"datasetParameters": {
 									"RedBus": {},
+									"table1": {},
 									"sinkPassenger": {},
 									"sinkRoute": {},
 									"sinkBus": {},
-									"sinkPayment": {}
+									"sinkPayment": {},
+									"sinkredbustable": {}
 								}
 							},
 							"staging": {
