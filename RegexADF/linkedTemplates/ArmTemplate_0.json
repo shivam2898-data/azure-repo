@@ -19,9 +19,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSynapseAnalytics1'"
 		},
-		"AzureSynapseAnalyticsRedBus_connectionString": {
+		"AzureSynapseAnalyticsRedBus_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSynapseAnalyticsRedBus'"
+			"metadata": "Secure string for 'password' of 'AzureSynapseAnalyticsRedBus'"
 		},
 		"New_AzureSqlDatabase_connectionString": {
 			"type": "secureString",
@@ -76,6 +76,18 @@
 			"defaultValue": "regexpooldedicated"
 		},
 		"AzureSynapseAnalytics1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "synpaseworkspace01"
+		},
+		"AzureSynapseAnalyticsRedBus_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "synpaseworkspace01.sql.azuresynapse.net"
+		},
+		"AzureSynapseAnalyticsRedBus_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "regexpooldedicated"
+		},
+		"AzureSynapseAnalyticsRedBus_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "synpaseworkspace01"
 		},
@@ -174,7 +186,16 @@
 				"annotations": [],
 				"type": "AzureSqlDW",
 				"typeProperties": {
-					"connectionString": "[parameters('AzureSynapseAnalyticsRedBus_connectionString')]"
+					"server": "[parameters('AzureSynapseAnalyticsRedBus_properties_typeProperties_server')]",
+					"database": "[parameters('AzureSynapseAnalyticsRedBus_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('AzureSynapseAnalyticsRedBus_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AzureSynapseAnalyticsRedBus_password')]"
+					}
 				}
 			},
 			"dependsOn": []
