@@ -151,6 +151,12 @@
 				},
 				{
 					"name": "selectFactTable"
+				},
+				{
+					"name": "aggregateFactTable"
+				},
+				{
+					"name": "selectFact2"
 				}
 			],
 			"scriptLines": [
@@ -301,6 +307,21 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectFactTable",
+				"selectFactTable aggregate(groupBy(Ticket_Fare,",
+				"          PassengerID,",
+				"          RouteID,",
+				"          BusID,",
+				"          PaymentID),",
+				"     payment_id_C = count(PaymentID)) ~> aggregateFactTable",
+				"aggregateFactTable select(mapColumn(",
+				"          Ticket_Fare,",
+				"          PassengerID,",
+				"          RouteID,",
+				"          BusID,",
+				"          PaymentID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectFact2",
 				"selectPassenger sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -377,7 +398,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment",
-				"selectFactTable sink(allowSchemaDrift: true,",
+				"selectFact2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          PassengerID as integer,",
