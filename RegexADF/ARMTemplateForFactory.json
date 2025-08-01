@@ -4453,6 +4453,7 @@
 						"          PassengerID,",
 						"          RouteID,",
 						"          BusID,",
+						"          Ticket_Fare = selectPayment@Ticket_Fare,",
 						"          PaymentID",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
