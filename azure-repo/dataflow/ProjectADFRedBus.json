@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "RedBus"
+				},
+				{
+					"dataset": {
+						"referenceName": "FactCsv",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
 				}
 			],
 			"sinks": [
@@ -52,6 +59,17 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkPayment",
+					"rejectedDataLinkedService": {
+						"referenceName": "projectBlobStorage",
+						"type": "LinkedServiceReference"
+					}
+				},
+				{
+					"dataset": {
+						"referenceName": "SynapseFactTable",
+						"type": "DatasetReference"
+					},
+					"name": "sinkFactTable",
 					"rejectedDataLinkedService": {
 						"referenceName": "projectBlobStorage",
 						"type": "LinkedServiceReference"
@@ -118,6 +136,21 @@
 				},
 				{
 					"name": "selectPayment"
+				},
+				{
+					"name": "joinPasseger"
+				},
+				{
+					"name": "joinRoute"
+				},
+				{
+					"name": "joinBus"
+				},
+				{
+					"name": "joinPayment"
+				},
+				{
+					"name": "selectFactTable"
 				}
 			],
 			"scriptLines": [
@@ -136,6 +169,21 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> RedBus",
+				"source(output(",
+				"          First_Name as string,",
+				"          Last_Name as string,",
+				"          Age as string,",
+				"          City_From as string,",
+				"          City_To as string,",
+				"          Bus_Type as string,",
+				"          Seat_Type as string,",
+				"          Booking_Type as string,",
+				"          Payment_Method as string,",
+				"          Ticket_Fare as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source2",
 				"RedBus select(mapColumn(",
 				"          First_Name,",
 				"          Last_Name,",
@@ -224,6 +272,34 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectPayment",
+				"source2, selectPassenger join(source2@First_Name == selectPassenger@First_Name,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinPasseger",
+				"joinPasseger, selectRoute join(source2@City_From == selectRoute@City_From,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinRoute",
+				"joinRoute, selectBus join(source2@Bus_Type == selectBus@Bus_Type,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinBus",
+				"joinBus, selectPayment join(source2@Payment_Method == selectPayment@Payment_Method,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinPayment",
+				"joinPayment select(mapColumn(",
+				"          PassengerID,",
+				"          RouteID,",
+				"          BusID,",
+				"          PaymentID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectFactTable",
 				"selectPassenger sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -299,7 +375,25 @@
 				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkPayment",
+				"selectFactTable sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          PassengerID as integer,",
+				"          RouteID as integer,",
+				"          BusID as integer,",
+				"          PaymentID as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkFactTable"
 			]
 		}
 	}

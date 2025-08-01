@@ -1,0 +1,37 @@
+{
+	"name": "SynapseFactTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalyticsRedBus",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "PassengerID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "RouteID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "BusID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PaymentID",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FactBooking"
+		}
+	}
+}
